@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Stopwatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 500;
+            background-color:lightpink;
+            margin: 100;
+        }
+        .container {
+            text-align:center;
+        }
+        .stopwatch {
+            font-size: 40px;
+            font-weight: bold;
+            color: blue;
+            border: 3px solid black;
+            border-radius: 00%;
+			background-color:black;
+			align-items: center;
+            width: 200px;
+            height: 200px;
+            line-height: 200px;
+            position: relative;
+            
+        }
+        .stopwatch:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background-color: black;
+            transform: translateX(-50%);
+        }
+        .button {
+            margin-top: 20px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: blue;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: purple;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="stopwatch" class="stopwatch">00:00:00 </div>
+        <button id="startStopButton" class="button">Start</button>
+        <button id="resetButton" class="button">Reset</button>
+   
+    </div>
+	 
+
+    <script>
+        let timer;
+        let isRunning = false;
+        let milliseconds = 0;
+        let seconds = 0;
+        let minutes = 0;
+
+        function startStop() {
+            if (isRunning) {
+                clearInterval(timer);
+                document.getElementById('startStopButton').innerText = 'Start';
+                isRunning = false;
+            } else {
+                timer = setInterval(updateTime, 10);
+                document.getElementById('startStopButton').innerText = 'Stop';
+                isRunning = true;
+            }
+        }
+
+        function reset() {
+            clearInterval(timer);
+            document.getElementById('startStopButton').innerText = 'Start';
+            isRunning = false;
+            milliseconds = 0;
+            seconds = 0;
+            minutes = 0;
+            updateTime();
+        }
+
+        function updateTime() {
+            milliseconds++;
+            if (milliseconds === 100) {
+                milliseconds = 0;
+                seconds++;
+            }
+            if (seconds === 60) {
+                seconds = 0;
+                minutes++;
+            }
+            document.getElementById('stopwatch').innerText = `${formatTime(minutes)}:${formatTime(seconds)}:${formatTime(milliseconds)}`;
+        }
+
+        function formatTime(time) {
+            return time < 10 ? `0${time}` : time;
+        }
+
+        document.getElementById('startStopButton').addEventListener('click', startStop);
+        document.getElementById('resetButton').addEventListener('click', reset);
+    </script>
+</body>
+</html>
